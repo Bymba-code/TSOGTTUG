@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id          Int         @id @default(autoincrement())
+  first_name  String?     @db.VarChar(80)
+  last_name   String?     @db.VarChar(80)
+  register    String?     @db.VarChar(45)
+  username    String?     @db.VarChar(100)
+  password    String?     @db.VarChar(255)
+  role        users_role?
+  create_date DateTime?   @db.Timestamp(0)
+  end_date    DateTime?   @db.Timestamp(0)
+  exam        exam[]
+}
+
+model category {
+  id                             Int     @id @default(autoincrement())
+  name                           String? @db.VarChar(45)
+  test_test_categoryTocategory   test[]  @relation("test_categoryTocategory")
+  topic_topic_categoryTocategory topic[] @relation("topic_categoryTocategory")
+}
+
+model test {
+  id                             Int            @id @default(autoincrement())
+  name                           String?        @db.VarChar(255)
+  img                            String?        @db.VarChar(255)
+  topic                          Int?
+  category                       Int?
+  date                           DateTime?      @db.Timestamp(0)
+  exam_test_exam_test_testTotest exam_test[]    @relation("exam_test_testTotest")
+  angilal                        category?      @relation("test_categoryTocategory", fields: [category], references: [id], onDelete: Cascade, map: "category")
+  relTopic                       topic?         @relation("test_topicTotopic", fields: [topic], references: [id], onDelete: Cascade, map: "topic")
+  testAnswers                    test_answers[] @relation("test_answers_testTotest")
+
+  @@index([topic], map: "topic_idx")
+  @@index([category], map: "category_idx")
+}
+
+model topic {
+  id                                Int       @id @default(autoincrement())
+  name                              String?   @db.VarChar(255)
+  category                          Int?
+  testNum                           Int?
+  date                              DateTime? @db.Timestamp(0)
+  test_test_topicTotopic            test[]    @relation("test_topicTotopic")
+  category_topic_categoryTocategory category? @relation("topic_categoryTocategory", fields: [category], references: [id], onDelete: Cascade, map: "fk_category")
+
+  @@index([category], map: "category_idx")
+}
+
+model test_answers {
+  id                           Int     @id @default(autoincrement())
+  test                         Int?
+  title                        String? @db.VarChar(100)
+  isSuccess                    Int?
+  test_test_answers_testTotest test?   @relation("test_answers_testTotest", fields: [test], references: [id], onDelete: Cascade, map: "test")
+
+  @@index([test], map: "test_idx")
+}
+
+model exam {
+  id       Int         @id @default(autoincrement())
+  user     Int?
+  isMake   Int?
+  date     DateTime?   @db.Timestamp(0)
+  users    users?      @relation(fields: [user], references: [id], onDelete: Cascade, map: "user_fk")
+  examTest exam_test[] @relation("exam_test_examToexam")
+
+  @@index([user], map: "user_idx")
+}
+
+model exam_test {
+  id                        Int   @id @default(autoincrement())
+  exam                      Int?
+  test                      Int?
+  answer                    Int?
+  isSuccess                 Int?
+  exam_exam_test_examToexam exam? @relation("exam_test_examToexam", fields: [exam], references: [id], onDelete: Cascade, map: "exam")
+  test_exam_test_testTotest test? @relation("exam_test_testTotest", fields: [test], references: [id], onDelete: Cascade, map: "test_fk")
+
+  @@index([exam], map: "exam_idx")
+  @@index([test], map: "test_idx")
+}
+
+model user_category {
+  id       Int       @id @default(autoincrement())
+  user     Int?
+  category Int?
+  date     DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([category], map: "category_idx")
+  @@index([user], map: "user_idx")
+}
+
+enum users_role {
+  admin
+  student
+}
