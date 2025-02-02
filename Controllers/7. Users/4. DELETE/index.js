@@ -15,9 +15,6 @@ const DELETE_USERS = async (req , res) => {
         }
 
         const user = await prisma.users.findUnique({
-            include:{
-                user_category:true
-            },
             where: {
                 id:parseInt(id)
             }
