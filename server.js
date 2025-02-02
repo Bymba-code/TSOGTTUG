@@ -23,7 +23,6 @@ const corsOptions = {
     allowedHeaders: "Content-Type,Authorization,",
 };
 app.use(cors(corsOptions));
-app.use(helmet());
 
 app.use("/uploads", express.static("uploads"));
 
