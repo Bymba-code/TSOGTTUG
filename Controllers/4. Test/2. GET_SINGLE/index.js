@@ -18,6 +18,7 @@ const GET_SINGLE_TEST = async (req , res) => {
             select: {
                 id:true, 
                 name: true,
+                img:true,
                 angilal: {
                     select:{
                         name:true
