@@ -44,43 +44,85 @@ const INSERT_EXAM = async (req, res) => {
       });
     }
 
-    let selectedTopics = [];
     const totalTopicsNeeded = parseInt(testNumber);
-
-    // Randomly pick topics from available topics
-    while (selectedTopics.length < totalTopicsNeeded && topics.length > 0) {
-      let randomIndex = Math.floor(Math.random() * topics.length);
-      selectedTopics.push(topics[randomIndex]);
-      topics.splice(randomIndex, 1);  // Remove selected topic from the remaining pool
-    }
-
     let selectedTests = [];
-    let selectedTestIds = new Set(); // Store selected test IDs to avoid duplicates
+    let selectedTestIds = new Set();
 
-    // Get random tests from selected topics
-    for (const topic of selectedTopics) {
-      const tests = await prisma.$queryRaw`
+    // First, try to get one test from each topic
+    for (const topic of topics) {
+      if (selectedTests.length >= totalTopicsNeeded) break;
+
+      let query = `
         SELECT * FROM test
-        WHERE topic = ${topic.id} AND category = ${parseInt(category)}
-        ORDER BY RAND()
-        LIMIT 1;
+        WHERE topic = ${topic.id} 
+        AND category = ${parseInt(category)}
       `;
+      
+      if (selectedTestIds.size > 0) {
+        query += ` AND id NOT IN (${Array.from(selectedTestIds).join(',')})`;
+      }
+      
+      query += ` ORDER BY RAND() LIMIT 1`;
 
-      if (tests.length > 0) {
-        // Check if test has already been selected
-        if (!selectedTestIds.has(tests[0].id)) {
-          selectedTests.push(tests[0]); // Push 1 random test from each selected topic
-          selectedTestIds.add(tests[0].id); // Add test ID to the set to prevent duplicates
-        }
+      const tests = await prisma.$queryRawUnsafe(query);
+
+      if (tests.length > 0 && !selectedTestIds.has(tests[0].id)) {
+        selectedTests.push(tests[0]);
+        selectedTestIds.add(tests[0].id);
       }
     }
 
-    // Ensure we have enough tests
+    // If we still need more tests, randomly select additional tests from any topic
+    while (selectedTests.length < totalTopicsNeeded) {
+      const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+      
+      let query = `
+        SELECT * FROM test
+        WHERE topic = ${randomTopic.id} 
+        AND category = ${parseInt(category)}
+      `;
+      
+      if (selectedTestIds.size > 0) {
+        query += ` AND id NOT IN (${Array.from(selectedTestIds).join(',')})`;
+      }
+      
+      query += ` ORDER BY RAND() LIMIT 1`;
+
+      const additionalTests = await prisma.$queryRawUnsafe(query);
+
+      if (additionalTests.length > 0 && !selectedTestIds.has(additionalTests[0].id)) {
+        selectedTests.push(additionalTests[0]);
+        selectedTestIds.add(additionalTests[0].id);
+      } else {
+        // Try getting any test from any topic
+        let fallbackQuery = `
+          SELECT * FROM test
+          WHERE category = ${parseInt(category)}
+        `;
+        
+        if (selectedTestIds.size > 0) {
+          fallbackQuery += ` AND id NOT IN (${Array.from(selectedTestIds).join(',')})`;
+        }
+        
+        fallbackQuery += ` ORDER BY RAND() LIMIT 1`;
+
+        const fallbackTests = await prisma.$queryRawUnsafe(fallbackQuery);
+
+        if (fallbackTests.length === 0) {
+          break;
+        }
+
+        selectedTests.push(fallbackTests[0]);
+        selectedTestIds.add(fallbackTests[0].id);
+      }
+    }
+
+    // Check if we have enough tests after all attempts
     if (selectedTests.length < totalTopicsNeeded) {
       return res.status(400).json({
         success: false,
         data: [],
-        message: `Олдсон тестүүд ${totalTopicsNeeded}-д хүрсэнгүй. Нийт: ${selectedTests.length}`,
+        message: `Хангалттай тест олдсонгүй. Шаардлагатай: ${totalTopicsNeeded}, Олдсон: ${selectedTests.length}`,
       });
     }
 
