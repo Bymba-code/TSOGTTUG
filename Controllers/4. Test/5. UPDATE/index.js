@@ -1,9 +1,29 @@
 const prisma = require("../../../Middlewares/prisma");
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/"); 
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); 
+    }
+});
+
+
+const upload = multer({ storage: storage }).single("image");
+
 
 const UPDATE_TEST = async (req, res) => {
     try {
+        upload(req, res, async function (err) {
+            if (err) {
+                return res.status(500).json({ success: false, message: "Зураг оруулахад алдаа гарлаа: " + err.message });
+            }
+
         const { id } = req.params;  
-        const { name, topic, category } = req.body;  
+        const {name, topic, category } = req.body;  
 
         if (!id) {
             return res.status(403).json({
@@ -30,6 +50,10 @@ const UPDATE_TEST = async (req, res) => {
 
 
         let updateData = {};
+
+        if (req.file) {
+            updateData.img = req.file.filename;
+        }
 
         if (name) {
             updateData.name = name;
@@ -63,6 +87,7 @@ const UPDATE_TEST = async (req, res) => {
             data: result,
             message: "Тест амжилттай шинэчиллээ."
         });
+        })
 
     } catch (err) {
         return res.status(500).json({
