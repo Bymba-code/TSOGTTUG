@@ -52,7 +52,10 @@ const UPDATE_TEST = async (req, res) => {
         let updateData = {};
 
         if (req.file) {
-            updateData.img = req.file.filename;
+            const imageFile = req.file;
+            const imageUrl = imageFile ? `/uploads/${imageFile.filename}` : null;
+
+            updateData.img = imageUrl;
         }
 
         if (name) {
