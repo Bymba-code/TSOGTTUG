@@ -14,7 +14,6 @@ const GET_ALL_TEST = async (req , res) => {
             test = await prisma.test.findMany({
                 skip:skip,
                 take:take,
-                img:true,
                 select: {
                     id:true, 
                     name: true,
@@ -45,7 +44,6 @@ const GET_ALL_TEST = async (req , res) => {
             test = await prisma.test.findMany({
                 skip: skip,
                 take:take,
-                img:true,
                 select: {
                     id:true, 
                     name: true,
