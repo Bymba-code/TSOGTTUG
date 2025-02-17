@@ -28,7 +28,7 @@ const GET_ALL_EXAM = async (req , res) => {
                 },
                 examTest: {
                   include: {
-                     test_exam_testTotest: {
+                     test_exam_test_testTotest: {
                       include: {
                         testAnswers: true  
                       }
@@ -59,7 +59,7 @@ const GET_ALL_EXAM = async (req , res) => {
               },
               examTest: {
                 include: {
-                   test_exam_testTotest: {
+                   test_exam_test_testTotest: {
                     include: {
                       testAnswers: true  
                     }
@@ -90,7 +90,7 @@ const GET_ALL_EXAM = async (req , res) => {
               },
               examTest: {
                 include: {
-                   test_exam_testTotest: {
+                   test_exam_test_testTotest: {
                     include: {
                       testAnswers: true  
                     }
@@ -122,7 +122,7 @@ const GET_ALL_EXAM = async (req , res) => {
               },
               examTest: {
                 include: {
-                   test_exam_testTotest: {
+                   test_exam_test_testTotest: {
                     include: {
                       testAnswers: true  
                     }
@@ -155,7 +155,7 @@ const GET_ALL_EXAM = async (req , res) => {
               },
               examTest: {
                 include: {
-                  test_exam_testTotest: {
+                  test_exam_test_testTotest: {
                     include: {
                       testAnswers: true  
                     }
@@ -185,7 +185,7 @@ const GET_ALL_EXAM = async (req , res) => {
                 },
                 examTest: {
                   include: {
-                    test_exam_testTotest: {
+                    test_exam_test_testTotest: {
                       include: {
                         testAnswers: true  
                       }
@@ -218,7 +218,7 @@ const GET_ALL_EXAM = async (req , res) => {
               },
               examTest: {
                 include: {
-                   test_exam_testTotest: {
+                   test_exam_test_testTotest: {
                     include: {
                       testAnswers: true,
                     },
