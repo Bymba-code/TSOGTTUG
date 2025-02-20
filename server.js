@@ -18,7 +18,7 @@ const app = express()
 
 
 const corsOptions = {
-    origin: ["http://localhost:5173", "https://omn1club.com", "https://system.tsogttsug.com", "https://admin.tsogttsug.com", "https://tsogttsug.com", "https://student.tsogttsug.com"], 
+    origin: ["http://localhost:5173", "https://omn1club.com", "https://system.tsogttsug.com", "http://system.tsogttsug.com", "https://tsogttsug.com", "https://student.tsogttsug.com", "http://student.tsogttsug.com", "http://tsogttsug.com"], 
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization,",
 };
