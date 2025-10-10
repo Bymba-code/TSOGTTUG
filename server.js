@@ -2,7 +2,6 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 
-const helmet = require("helmet");
 
 
 const authRoutes = require("./routes/1. Auth")
@@ -13,15 +12,24 @@ const examRouter = require("./routes/5. Exam")
 const answerRouter = require("./routes/6. Answers")
 const userRouter = require("./routes/7. User")
 const userCategoryRouter = require("./routes/8. UserCategory")
+const statRouter = require("./routes/9. Stats")
 
 const app = express()
 
-
 const corsOptions = {
-    origin: ["http://localhost:5173", "https://omn1club.com", "https://system.tsogttsug.com", "http://system.tsogttsug.com", "https://tsogttsug.com", "https://student.tsogttsug.com", "http://student.tsogttsug.com", "http://tsogttsug.com"], 
-    methods: "GET,POST,PUT,DELETE",
-    allowedHeaders: "Content-Type,Authorization,",
+    origin: [
+        "http://localhost:5173",
+        "https://omn1club.com",
+        "https://system.tsogttsug.com",
+        "http://system.tsogttsug.com",
+        "https://tsogttsug.com",
+        "https://student.tsogttsug.com" // ← энэ тасарсан байсан
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true // Хэрвээ cookie эсвэл токен дамжуулж байвал заавал хэрэгтэй
 };
+
 app.use(cors(corsOptions));
 
 app.use("/uploads", express.static("uploads"));
@@ -37,6 +45,7 @@ app.use("/api/v1", examRouter)
 app.use("/api/v1", answerRouter)
 app.use("/api/v1", userRouter)
 app.use("/api/v1", userCategoryRouter)
+app.use("/api/v1", statRouter)
 
 
 
