@@ -8,18 +8,19 @@ const UPDATE_TEST = require("../../Controllers/4. Test/5. UPDATE")
 
 const Authenticate = require("../../Middlewares/authenticate")
 const Authorize = require("../../Middlewares/authorization")
+const authMiddleware = require("../../Middlewares/authCookie")
 
 
 const router = express.Router()
 
 router.route("/test")
 .get(GET_ALL_TEST)
-.post(Authenticate, Authorize(["admin"]), INSERT_TEST)
+.post(authMiddleware, Authorize(["admin"]), INSERT_TEST)
 
 router.route("/test/:id")
 .get(GET_SINGLE_TEST)
-.delete(Authenticate, Authorize(["admin"]), DELETE_TEST)
-.put(Authenticate, Authorize(["admin"]), UPDATE_TEST)
+.delete(authMiddleware, Authorize(["admin"]), DELETE_TEST)
+.put(authMiddleware, Authorize(["admin"]), UPDATE_TEST)
 
 
 module.exports = router

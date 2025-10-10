@@ -6,15 +6,16 @@ const DELETE_USERS_CATEGORY = require("../../Controllers/8. UserCategory/4. DELE
 
 const Authenticate = require("../../Middlewares/authenticate")
 const Authorize = require("../../Middlewares/authorization")
+const authMiddleware = require("../../Middlewares/authCookie")
 
 const router = express.Router()
 
 router.route("/user/category")
 .get(GET_ALL_USERS_CATEGORY)
-.post(Authenticate, Authorize(["admin"]), INSERT_USER_CATEGORY)
+.post(authMiddleware, Authorize(["admin"]), INSERT_USER_CATEGORY)
 
 router.route("/user/category/:id")
-.get(Authenticate, Authorize(["admin"]),GET_SINGLE_USER_CATEGORY)
-.delete(Authenticate, Authorize(["admin"]),DELETE_USERS_CATEGORY)
+.get(authMiddleware, Authorize(["admin"]),GET_SINGLE_USER_CATEGORY)
+.delete(authMiddleware, Authorize(["admin"]),DELETE_USERS_CATEGORY)
 
 module.exports = router

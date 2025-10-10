@@ -7,17 +7,18 @@ const Authenticate = require("../../Middlewares/authenticate")
 const Authorize = require("../../Middlewares/authorization")
 const UPDATE_ANSWERS = require("../../Controllers/6. Answers/4. UPDATE")
 const DELETE_ANSWERS = require("../../Controllers/6. Answers/5. DELETE")
+const authMiddleware = require("../../Middlewares/authCookie")
 
 const router = express.Router()
 
 router.route("/answer")
 .get(GET_ALL_ANSWERS)
-.post(Authenticate, Authorize(["admin"]), INSERT_ANSWERS)
+.post(authMiddleware, Authorize(["admin"]), INSERT_ANSWERS)
 
 router.route("/answer/:id")
 .get(GET_SINGLE_ANSWERS)
-.put(Authenticate, Authorize(["admin"]), UPDATE_ANSWERS)
-.delete(Authenticate, Authorize(["admin"]), DELETE_ANSWERS)
+.put(authMiddleware, Authorize(["admin"]), UPDATE_ANSWERS)
+.delete(authMiddleware, Authorize(["admin"]), DELETE_ANSWERS)
 
 
 module.exports = router

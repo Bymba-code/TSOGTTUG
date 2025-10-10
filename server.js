@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
 
 
 
@@ -23,7 +24,7 @@ const corsOptions = {
         "https://system.tsogttsug.com",
         "http://system.tsogttsug.com",
         "https://tsogttsug.com",
-        "https://student.tsogttsug.com" // ← энэ тасарсан байсан
+        "https://student.tsogttsug.com" 
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -31,6 +32,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use(cookieParser())
 
 app.use("/uploads", express.static("uploads"));
 
