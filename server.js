@@ -14,12 +14,19 @@ const answerRouter = require("./routes/6. Answers")
 const userRouter = require("./routes/7. User")
 const userCategoryRouter = require("./routes/8. UserCategory")
 const statRouter = require("./routes/9. Stats")
+const teacherRouter = require("./routes/10. Teacher")
+const teacherCategoryRouter = require("./routes/11. TeacherCategory")
+const scheludeRouter = require("./routes/12. Schelude")
+const drivingScheludeRouter = require("./routes/13. DrivingSchelude")
+const studentScheludeRouter = require("./routes/14. StudentSchelude")
 
 const app = express()
 
 const corsOptions = {
     origin: [
         "http://localhost:5173",
+        "http://localhost:5174",
+
         "https://omn1club.com",
         "https://system.tsogttsug.com",
         "http://system.tsogttsug.com",
@@ -28,12 +35,12 @@ const corsOptions = {
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true // Хэрвээ cookie эсвэл токен дамжуулж байвал заавал хэрэгтэй
+    credentials: true 
 };
+app.use(cookieParser())
 
 app.use(cors(corsOptions));
 
-app.use(cookieParser())
 
 app.use("/uploads", express.static("uploads"));
 
@@ -49,6 +56,12 @@ app.use("/api/v1", answerRouter)
 app.use("/api/v1", userRouter)
 app.use("/api/v1", userCategoryRouter)
 app.use("/api/v1", statRouter)
+app.use("/api/v1", teacherRouter)
+app.use("/api/v1", teacherCategoryRouter)
+app.use("/api/v1", scheludeRouter)
+app.use("/api/v1", drivingScheludeRouter)
+app.use("/api/v1", studentScheludeRouter)
+
 
 
 
