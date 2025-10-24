@@ -13,9 +13,20 @@ const GET_ALL_DRIVING_SCHELUDE = async (req, res) => {
       schelude = await prisma.driving_schelude.findMany({
         skip,
         take: sizeNum,
+        include: {
+          teacher_driving_schelude_teacherToteacher:true,
+          category_driving_schelude_categoryTocategory:true,
+          user_driving_schelude:true
+        }
       });
     } else {
-      schelude = await prisma.driving_schelude.findMany();
+      schelude = await prisma.driving_schelude.findMany({
+        include:{
+          teacher_driving_schelude_teacherToteacher:true,
+          category_driving_schelude_categoryTocategory:true,
+          user_driving_schelude:true
+        }
+      });
     }
 
     if (!schelude || schelude.length === 0) {

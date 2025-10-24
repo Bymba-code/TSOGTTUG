@@ -8,15 +8,9 @@ const USERS_ME = async (req , res) => {
 
         const user = await prisma.users.findUnique({
             where: { id: userId },
-            select: {
-                id: true,
-                username: true,
-                first_name: true,
-                last_name: true,
-                register: true,
-                role: true,
-                create_date: true,
-                end_date: true
+           
+            include: {
+                contract:true
             }
         })
 

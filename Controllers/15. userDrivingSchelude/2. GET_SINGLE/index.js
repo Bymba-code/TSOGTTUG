@@ -1,6 +1,6 @@
 const prisma = require('../../../Middlewares/prisma')
 
-const GET_SINGLE_DRIVING_SCHELUDE = async (req, res) => {
+const GET_SINGLE_STUDENT_DRIVE_SCHELUDE = async (req, res) => {
     try 
     {
         const {id} = req.params;
@@ -14,30 +14,30 @@ const GET_SINGLE_DRIVING_SCHELUDE = async (req, res) => {
             })
         }
 
-        const data = await prisma.driving_schelude.findUnique({
+        const testAnswer = await prisma.user_driving_schelude.findUnique({
             where:
             {
                 id: parseInt(id)
             },
             include: {
-                teacher_driving_schelude_teacherToteacher:true,
-                category_driving_schelude_categoryTocategory:true,
-                user_driving_schelude:true
+                drive_to_schelude:true,
+                drive_to_users:true
             }
+
         })
         
-        if(!data)
+        if(!testAnswer)
         {
             return res.status(404).json({
                 success:false,
                 data:[],
-                message: "Мэдээлэл олдсонгүй."
+                message: "Өгөгдөл олдсонгүй."
             })
         }
         
         return res.status(200).json({
             success:true,
-            data:data,
+            data:testAnswer,
             message:"Амжилттай"
         })
 
@@ -52,4 +52,4 @@ const GET_SINGLE_DRIVING_SCHELUDE = async (req, res) => {
     }
 }
 
-module.exports = GET_SINGLE_DRIVING_SCHELUDE
+module.exports = GET_SINGLE_STUDENT_DRIVE_SCHELUDE

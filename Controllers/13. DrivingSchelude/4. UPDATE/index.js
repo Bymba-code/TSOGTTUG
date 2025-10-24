@@ -4,7 +4,6 @@ const UPDATE_DRIVING_SCHELUDE = async (req, res) => {
   try {
     const { id } = req.params;
     const { 
-      user, 
       category, 
       teacher, 
       vechile, 
@@ -40,7 +39,6 @@ const UPDATE_DRIVING_SCHELUDE = async (req, res) => {
     // ✅ 3. Шинэчлэх өгөгдлийг цуглуулах
     let updateData = {};
 
-    if (user) updateData.user = parseInt(user);
     if (category) updateData.category = parseInt(category);
     if (teacher) updateData.teacher = parseInt(teacher);
     if (vechile) updateData.vechile = vechile;

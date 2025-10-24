@@ -3,16 +3,9 @@ const prisma = require('../../../Middlewares/prisma')
 const INSERT_DRIVING_SCHELUDE = async (req, res) => {
     try 
     {
-        const { user, category, teacher, vechile, area, schelude_date, start_time, end_time, note} = req.body;
+        const { category, teacher, vechile, area, schelude_date, start_time, end_time, note} = req.body;
 
-        if(!user)
-        {
-            return res.status(403).json({
-                success:false,
-                data:[],
-                message: "Суралцагч сонгоно уу."
-            })
-        }
+
         if(!category)
         {
             return res.status(403).json({
@@ -73,7 +66,6 @@ const INSERT_DRIVING_SCHELUDE = async (req, res) => {
 
         const result = await prisma.driving_schelude.create({
             data: {
-                user: parseInt(user),
                 category: parseInt(category),
                 teacher: parseInt(teacher),
                 vechile: vechile,
