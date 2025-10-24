@@ -13,8 +13,8 @@ const authMiddleware = require("../../Middlewares/authCookie")
 const router = express.Router()
 
 router.route("/users")
-.get(authMiddleware, Authorize(["admin"]), GET_ALL_USERS)
-.post(authMiddleware, Authorize(["admin"]), INSERT_USERS)
+.get(authMiddleware,  GET_ALL_USERS)
+.post(authMiddleware, INSERT_USERS)
 
 router.route("/users/:id")
 .get(GET_SINGLE_USERS)

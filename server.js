@@ -19,6 +19,14 @@ const teacherCategoryRouter = require("./routes/11. TeacherCategory")
 const scheludeRouter = require("./routes/12. Schelude")
 const drivingScheludeRouter = require("./routes/13. DrivingSchelude")
 const studentScheludeRouter = require("./routes/14. StudentSchelude")
+const studentDriveSchelude = require("./routes/15. userDrivingSchelude")
+const userStatRoutes = require("./routes/16. UserStats")
+const invoiceRoutes = require("./routes/17. Invoices")
+const paymentRoutes = require("./routes/18. Payment")
+const contractRoutes = require("./routes/19. Contract")
+const videoRoutes = require("./routes/20. Videos")
+const progressRoutes = require("./routes/21. Progress")
+const storePayRoutes = require("./routes/23. StorePay")
 
 const app = express()
 
@@ -26,7 +34,6 @@ const corsOptions = {
     origin: [
         "http://localhost:5173",
         "http://localhost:5174",
-
         "https://omn1club.com",
         "https://system.tsogttsug.com",
         "http://system.tsogttsug.com",
@@ -61,6 +68,15 @@ app.use("/api/v1", teacherCategoryRouter)
 app.use("/api/v1", scheludeRouter)
 app.use("/api/v1", drivingScheludeRouter)
 app.use("/api/v1", studentScheludeRouter)
+app.use("/api/v1", studentDriveSchelude)
+app.use("/api/v1", userStatRoutes)
+app.use("/api/v1", invoiceRoutes)
+app.use("/api/v1", paymentRoutes)
+app.use("/api/v1", contractRoutes)
+app.use("/api/v1", videoRoutes)
+app.use("/api/v1", progressRoutes)
+app.use("/api/v1", storePayRoutes)
+
 
 
 
